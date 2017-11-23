@@ -1,0 +1,3 @@
+AMER;Americanas.com;5
+SUBM;Submarino.com;4
+MEGA;Megaloja Palace;1
