@@ -5,9 +5,6 @@
  */
 package Entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  * @author 20161bsi0349
@@ -16,13 +13,11 @@ public class Loja {
     private String identificador;
     private String nome;
     private int avaliacao;
-    private List<LojaProduto> listaLojaProduto;
 
     public Loja(String identificador, String nome, int avaliacao) {
         this.identificador = identificador;
         this.nome = nome;
         this.avaliacao = avaliacao;
-        listaLojaProduto = new ArrayList<>();
     }
 
     /**
