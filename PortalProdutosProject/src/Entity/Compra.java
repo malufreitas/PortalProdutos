@@ -5,10 +5,12 @@
  */
 package Entity;
 
+import java.io.Serializable;
+
 /**
  *
  * @author andre.martins
  */
-public class Compra {
+public class Compra implements Serializable{
     
 }

@@ -5,11 +5,13 @@
  */
 package Entity;
 
+import java.io.Serializable;
+
 /**
  *
  * @author 20161bsi0349
  */
-public class LojaProduto {
+public class LojaProduto implements Serializable{
 
     public LojaProduto(Produto produto, Loja loja, double valor, int quantidade) {
         this.valor = valor;

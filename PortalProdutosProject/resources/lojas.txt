@@ -4,4 +4,3 @@ SUBM;Submarino.com;4
 RICE;Ricardo Eletro;4
 MAGA;Magazine Luiza;5
 MEGA;Megaloja Palace;1
-		
