@@ -22,9 +22,14 @@ import java.util.logging.Logger;
  * @author andre
  */
 public class PortalFileStream {
-    private String path = "resources/";
-    
-    public void Save(String fileName, Object... item){
+    private final String path = "resources/";
+
+    /**
+     * Salva um objeto em um arquivo específico
+     * @param fileName Nome do arquivo a ser criado
+     * @param item Item a ser salvo
+     */
+    public void Save(String fileName, Object item){
         try {
             String path = "resources/";
             FileOutputStream outFile = new FileOutputStream(path + fileName);
@@ -39,22 +44,82 @@ public class PortalFileStream {
         }
     }
     
+    /**
+     * Salva vários objetos em um único arquivo específico
+     * @param fileName Nome do arquivo a ser criado
+     * @param items Array de itens a serem salvos
+     */
+    public void Save(String fileName, Object... items){
+        try {
+            FileOutputStream outFile = new FileOutputStream(path + fileName);
+            ObjectOutputStream objOut = new ObjectOutputStream(outFile);
+            
+            for(int i = 0; i < items.length; i++){
+                objOut.writeObject(items[i]);
+            }
+            
+            objOut.close();
+            outFile.close();
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    /**
+     * Lê um arquivo que contém um único objeto salvo.
+     * @param fileName Nome do arquivo
+     * @return Objeto presente no arquivo
+     */
     public Object Read(String fileName){
         try {
             FileInputStream inputFile = new FileInputStream(path + fileName);
             ObjectInputStream objIn = new ObjectInputStream(inputFile);
             Object obj = objIn.readObject();
-            
-            
             return obj;
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(PortalFileStream.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println("Erro: arquivo " + fileName + " não encontrado.");
+            return null;
         } catch (IOException ex) {
-            Logger.getLogger(PortalFileStream.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(PortalFileStream.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
-        
+
         return null;
     }
+    
+    /**
+     * Lê um arquivo que contém vários objetos salvos na ordem de "targets"
+     * @param fileName Nome do arquivo 
+     * @param targets Variáveis "Alvo" de cada objeto lido
+     * @return 
+     */
+    public Object[] Read(String fileName, Object... targets){
+        try {
+            FileInputStream inputFile = new FileInputStream(path + fileName);
+            ObjectInputStream objIn = new ObjectInputStream(inputFile);
+            Object[] result = new Object[targets.length]; 
+            Object obj;
+            
+            for(int i = 0; i < targets.length; i++){    
+                obj = objIn.readObject();
+                Class objClass = obj.getClass();
+                result[i] = objClass.cast(obj);
+            }
+            
+            return result;
+        } catch (FileNotFoundException ex) {
+            System.err.println("Erro: arquivo " + fileName + " não encontrado.");
+            return null;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
+    }
+    
 }
