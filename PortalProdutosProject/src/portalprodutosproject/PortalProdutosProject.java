@@ -11,6 +11,7 @@ import Entity.Livro;
 import Entity.Loja;
 import Entity.LojaProduto;
 import Entity.Produto;
+import View.Aplicacao;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class PortalProdutosProject {
         lerProdutos();
        
         Application app = new Application(listaLojas, listaLojaProdutos, mapProdutos);
-        app.startApplication();
+       app.startApplication();
     }
 
     /**

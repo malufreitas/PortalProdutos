@@ -5,17 +5,13 @@
  */
 package portalprodutosproject;
 
-import Entity.LojaProduto;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInput;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.Serializable;
 
 /**
  *
@@ -29,9 +25,8 @@ public class PortalFileStream {
      * @param fileName Nome do arquivo a ser criado
      * @param item Item a ser salvo
      */
-    public void Save(String fileName, Object item){
+    public void Save(String fileName, Serializable item){
         try {
-            String path = "resources/";
             FileOutputStream outFile = new FileOutputStream(path + fileName);
             ObjectOutputStream objOut = new ObjectOutputStream(outFile);
             objOut.writeObject(item);

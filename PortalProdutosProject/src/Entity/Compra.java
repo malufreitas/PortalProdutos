@@ -13,37 +13,23 @@ import java.util.Date;
  * @author andre.martins
  */
 public class Compra implements Serializable{
-    private Produto produto;
-    private Loja loja;
+   private LojaProduto lojaProduto;
     private double valorPago;
     private Date dataCompra;
+    private int quantidade;
 
     /**
-     * @return the produto
+     * @return the lojaProduto
      */
-    public Produto getProduto() {
-        return produto;
+    public LojaProduto getLojaProduto() {
+        return lojaProduto;
     }
 
     /**
-     * @param produto the produto to set
+     * @param lojaProduto the lojaProduto to set
      */
-    public void setProduto(Produto produto) {
-        this.produto = produto;
-    }
-
-    /**
-     * @return the loja
-     */
-    public Loja getLoja() {
-        return loja;
-    }
-
-    /**
-     * @param loja the loja to set
-     */
-    public void setLoja(Loja loja) {
-        this.loja = loja;
+    public void setLojaProduto(LojaProduto lojaProduto) {
+        this.lojaProduto = lojaProduto;
     }
 
     /**
@@ -73,4 +59,20 @@ public class Compra implements Serializable{
     public void setDataCompra(Date dataCompra) {
         this.dataCompra = dataCompra;
     }
+
+    /**
+     * @return the quantidade
+     */
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    /**
+     * @param quantidade the quantidade to set
+     */
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
+    }
+
+    
 }
