@@ -5,10 +5,8 @@
  */
 package Entity;
 
-/**
- *
- * @author 20161bsi0349
- */
+
+
 public class ItemCasa extends Produto{
     private String material;
     private String cor;

@@ -7,10 +7,7 @@ package Entity;
 
 import java.io.Serializable;
 
-/**
- *
- * @author 20161bsi0349
- */
+
 public class Loja implements Serializable{
     private String identificador;
     private String nome;
@@ -63,4 +60,17 @@ public class Loja implements Serializable{
     public void setAvaliacao(int avaliacao) {
         this.avaliacao = avaliacao;
     }
+    
+    
+    @Override
+    public String toString() {
+        return "[" + identificador + "]    " + String.format("%-23s", nome) + avaliacao;
+    }
+    
+    
+    @Override
+    public boolean equals(Object obj) {
+	return (obj instanceof Loja && ((Loja) obj).identificador.equals(this.identificador));
+    }
+    
 }

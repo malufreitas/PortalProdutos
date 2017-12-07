@@ -13,10 +13,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-/**
- *
- * @author andre
- */
+
+
 public class PortalFileStream {
     private final String path = "resources/";
 

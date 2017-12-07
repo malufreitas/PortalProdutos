@@ -20,10 +20,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-/**
- *
- * @author andre.martins
- */
+
+
 public class PortalProdutosProject {
 
     private static List<Loja> listaLojas;
@@ -39,7 +37,7 @@ public class PortalProdutosProject {
         listaLojas = new ArrayList<>();
         leLojas();
         lerProdutos();
-       
+               
         Application app = new Application(listaLojas, listaLojaProdutos, mapProdutos);
        app.startApplication();
     }

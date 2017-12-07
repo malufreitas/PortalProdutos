@@ -8,10 +8,7 @@ package Entity;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- *
- * @author andre.martins
- */
+
 public class Compra implements Serializable{
    private LojaProduto lojaProduto;
     private double valorPago;

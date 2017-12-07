@@ -18,10 +18,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-/**
- *
- * @author André Martins
- */
+
+
 public class Application {
 
     private List<Loja> listaLojas;
@@ -38,7 +36,7 @@ public class Application {
         this.listaLojas = listaLojas;
         this.listaLojaProdutos = listaLojaProdutos;
         this.mapProdutos = mapProdutos;
-
+        
         instanciaCompras();
     }
 
@@ -72,9 +70,10 @@ public class Application {
                 case "2":
                     verLojas();
                     break;
-
             }
-
+            
+            System.err.println("Digite 'sair' para sair do menu, ou digite qualquer coisa para continuar no Portal Produtos: ");
+            choice = scan.next();
         }
 
     }
@@ -83,7 +82,7 @@ public class Application {
         String choice = "";
         
         while (!choice.toLowerCase().equals("voltar")) {
-            System.err.println("Digite o nome do produto, tipo, código ou loja que deseja pesquisar:");
+            System.err.println("Digite o nome do produto, tipo, código ou loja que deseja pesquisar: ");
             String search = scan.next().toLowerCase();
 
             HashSet<LojaProduto> setLojaProduto = new HashSet<>();
@@ -103,13 +102,63 @@ public class Application {
             for (LojaProduto lojaProduto : setLojaProduto) {
                 System.out.println(lojaProduto.toString());
             }
-        }
+            
+            System.err.println("Digite 'voltar' para retornar ao menu, ou digite qualquer coisa para fazer outra pesquisa por produtos: ");
+            choice = scan.next();
+        }       
     }
 
+    
     private void verLojas() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String choice = "";
+        double total;
+        
+        System.out.printf("%-11s  %-14s  %s\n", "IdLoja", "NomeLoja", "Avaliacao");
+        for(Loja loja : listaLojas)
+        {
+            System.out.println(loja.toString());
+        }
+
+        while (!choice.toLowerCase().equals("voltar")) {
+            total = 0.0;
+            System.err.println("Digite o IdLoja da loja que deseja pesquisar: ");
+            String id = scan.next().toUpperCase();
+            
+            //verifica existencia da loja
+            Loja loja = buscarLoja(id);
+            
+            for(LojaProduto lojaproduto : listaLojaProdutos)
+            {
+                if(lojaproduto.getLoja().equals(loja))
+                {
+                    System.out.println(lojaproduto.toString());
+                    System.out.println(lojaproduto.getValor());
+                    total += lojaproduto.getValor();
+                }
+            }
+            
+            //valor total da loja, soma produtos  
+            System.out.println(String.format("Soma Total Loja [%s]: %.2f", id, total));
+            
+            System.err.println("Digite 'voltar' para retornar ao menu, ou digite qualquer coisa para fazer outra pesquisa por lojas: ");
+            choice = scan.next();
+        }        
     }
 
+    
+    /** Busca uma loja conforme o identificador. */
+    private Loja buscarLoja(String id) 
+    {
+        for(Loja loja : listaLojas) 
+        {
+            if (loja.getIdentificador().equals(id))
+                return loja;
+        }
+        return null;
+    } 
+
+    
+    
     private boolean isNumeric(String str) {
         for (char c : str.toCharArray()) {
             if (!Character.isDigit(c)) {
@@ -118,7 +167,8 @@ public class Application {
         }
         return true;
     }
-
+        
+        
     /**
      * Buscar LojaProduto por ID do produto
      *

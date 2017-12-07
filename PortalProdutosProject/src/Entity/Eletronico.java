@@ -5,10 +5,7 @@
  */
 package Entity;
 
-/**
- *
- * @author 20161bsi0349
- */
+
 public class Eletronico extends Produto{
     private String marca;
     private double peso;

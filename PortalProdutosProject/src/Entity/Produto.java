@@ -7,10 +7,7 @@ package Entity;
 
 import java.io.Serializable;
 
-/**
- *
- * @author 20161bsi0349
- */
+
 public class Produto implements Serializable{
     private int cod;
     private String nome;

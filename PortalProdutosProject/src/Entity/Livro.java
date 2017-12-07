@@ -5,10 +5,8 @@
  */
 package Entity;
 
-/**
- *
- * @author 20161bsi0349
- */
+
+
 public class Livro extends Produto{
     private String autor;
     private int numeroPaginas;
