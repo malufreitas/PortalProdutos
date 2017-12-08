@@ -18,8 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-
-
 public class Application {
 
     private List<Loja> listaLojas;
@@ -36,13 +34,14 @@ public class Application {
         this.listaLojas = listaLojas;
         this.listaLojaProdutos = listaLojaProdutos;
         this.mapProdutos = mapProdutos;
-        
+
         instanciaCompras();
     }
 
     private void instanciaCompras() {
-        listaCompras = (ArrayList<Compra>) pfs.Read("Compras.dat");
+        clearConsole();
 
+        listaCompras = (ArrayList<Compra>) pfs.Read("Compras.dat");
         if (listaCompras == null) {
             listaCompras = new ArrayList<>();
             pfs.Save("Compras.dat", listaCompras);
@@ -51,17 +50,17 @@ public class Application {
 
     public void startApplication() {
         String choice = "";
-
-        System.out.println("\tOlá, seja bem vindo a Portal de Produtos.");
-
         scan = new Scanner(System.in);
 
-        while (!choice.toLowerCase().equals("sair")) {
-            System.out.println("Selecione a opção:");
-            System.err.println("[1] Pesquisar por produtos");
-            System.err.println("[2] Ver lojas disponíveis");
+        do {
+            clearConsole();
+            System.out.println("\tOlá, seja bem vindo a Portal de Produtos.");
 
-            choice = scan.next();
+            System.out.println("Selecione a opção ou digite 'sair': ");
+            System.out.println("[1] Pesquisar por produtos");
+            System.out.println("[2] Ver lojas disponíveis");
+
+            choice = scan.nextLine();
 
             switch (choice) {
                 case "1":
@@ -71,19 +70,16 @@ public class Application {
                     verLojas();
                     break;
             }
-            
-            System.err.println("Digite 'sair' para sair do menu, ou digite qualquer coisa para continuar no Portal Produtos: ");
-            choice = scan.next();
-        }
-
+        } while (!choice.toLowerCase().equals("sair"));
     }
 
     private void pesquisarProdutos() {
         String choice = "";
-        
+
         while (!choice.toLowerCase().equals("voltar")) {
-            System.err.println("Digite o nome do produto, tipo, código ou loja que deseja pesquisar: ");
-            String search = scan.next().toLowerCase();
+            clearConsole();
+            System.out.println("Digite o nome do produto, tipo, código ou loja que deseja pesquisar: ");
+            String search = scan.nextLine().toLowerCase();
 
             HashSet<LojaProduto> setLojaProduto = new HashSet<>();
 
@@ -103,62 +99,67 @@ public class Application {
                 System.out.println(lojaProduto.toString());
             }
             
-            System.err.println("Digite 'voltar' para retornar ao menu, ou digite qualquer coisa para fazer outra pesquisa por produtos: ");
+            System.out.println("Deseja comprar algo? (S ou N)");
+            String isBuying = scan.nextLine().toUpperCase();
+
+            if (isBuying.equals("S") ) {
+                buyItem();
+            }
+
+            System.out.println("Digite 'voltar' para retornar ao menu, ou digite qualquer coisa para fazer outra pesquisa por produtos: ");
             choice = scan.next();
-        }       
+        }
     }
 
-    
     private void verLojas() {
-        String choice = "";
+        clearConsole();
+        String id = "";
         double total;
-        
+
         System.out.printf("%-11s  %-14s  %s\n", "IdLoja", "NomeLoja", "Avaliacao");
-        for(Loja loja : listaLojas)
-        {
+        for (Loja loja : listaLojas) {
             System.out.println(loja.toString());
         }
 
-        while (!choice.toLowerCase().equals("voltar")) {
+        do {
             total = 0.0;
-            System.err.println("Digite o IdLoja da loja que deseja pesquisar: ");
-            String id = scan.next().toUpperCase();
-            
-            //verifica existencia da loja
-            Loja loja = buscarLoja(id);
-            
-            for(LojaProduto lojaproduto : listaLojaProdutos)
-            {
-                if(lojaproduto.getLoja().equals(loja))
-                {
+            System.out.println("\nDigite o Identificador da loja que deseja visualizar ou 'voltar': ");
+            id = scan.next();
+
+            List<LojaProduto> lojasExibidas = buscarLojaProdutoId(id);
+
+            if (lojasExibidas.isEmpty()) {
+                clearConsole();
+                System.err.println("Nenhuma loja encontrada.");
+            } else {
+                clearConsole();
+                System.out.printf("\n%-4s  %-6s  %-5s  %-25s %-25s\n", "Cod", "IdLoja", "Valor", "NomeProduto", "Informações");
+
+                for (LojaProduto lojaproduto : lojasExibidas) {
                     System.out.println(lojaproduto.toString());
-                    System.out.println(lojaproduto.getValor());
                     total += lojaproduto.getValor();
                 }
+
+                //valor total da loja, soma produtos  
+                System.out.println(String.format("Capital Total da Loja [%s]: %.2f", id.toUpperCase(), total));
             }
-            
-            //valor total da loja, soma produtos  
-            System.out.println(String.format("Soma Total Loja [%s]: %.2f", id, total));
-            
-            System.err.println("Digite 'voltar' para retornar ao menu, ou digite qualquer coisa para fazer outra pesquisa por lojas: ");
-            choice = scan.next();
-        }        
+        } while (!id.toLowerCase().equals("voltar"));
     }
 
-    
-    /** Busca uma loja conforme o identificador. */
-    private Loja buscarLoja(String id) 
-    {
-        for(Loja loja : listaLojas) 
-        {
-            if (loja.getIdentificador().equals(id))
-                return loja;
+    /**
+     * Busca uma loja conforme o identificador.
+     */
+    private List<LojaProduto> buscarLojaProdutoId(String id) {
+        List<LojaProduto> listaLp = new ArrayList<>();
+        id = id.toUpperCase();
+        for (LojaProduto lojaProduto : listaLojaProdutos) {
+            if (lojaProduto.getLoja().getIdentificador().equals(id)) {
+                listaLp.add(lojaProduto);
+            }
         }
-        return null;
-    } 
+        return listaLp;
+    }
 
-    
-    
     private boolean isNumeric(String str) {
         for (char c : str.toCharArray()) {
             if (!Character.isDigit(c)) {
@@ -167,8 +168,7 @@ public class Application {
         }
         return true;
     }
-        
-        
+
     /**
      * Buscar LojaProduto por ID do produto
      *
@@ -257,5 +257,52 @@ public class Application {
         }
 
         return lstLojaProduto;
+    }
+
+    private LojaProduto buscarLojaProduto(String idLoja, int idProduto) {
+        for (LojaProduto lojaProduto : buscarLojaProdutoId(idLoja)) {
+            if (lojaProduto.getProduto().getCod() == idProduto) {
+                return lojaProduto;
+            }
+        }
+        return null;
+    }
+
+    private void clearConsole() {
+        for (int i = 0; i < 100; i++) {
+            System.out.println();
+        }
+    }
+
+    private void buyItem() {
+        System.out.println("\nDigite o IdLoja IdProduto Quantidade (Nesta ordem)");
+
+        try {
+            String[] item = scan.nextLine().split(" ");
+
+            if (item.length == 3 && Integer.parseInt(item[2]) > 0) {
+                LojaProduto lp = buscarLojaProduto(item[0], Integer.parseInt(item[1]));
+                int quantidade = Integer.parseInt(item[2]);
+                double valorFinal = 0.0;
+                
+                for (int i = 0; i < quantidade; i++) {
+                    valorFinal += lp.getValor();
+                }
+                
+                Compra novaCompra = new Compra(lp, quantidade, valorFinal);
+                
+                listaCompras.add(novaCompra);
+                pfs.Save("Compras.dat", listaCompras);
+                
+                lp.setQuantidade(lp.getQuantidade() - quantidade);  
+                pfs.Save("Produtos.dat", mapProdutos, listaLojaProdutos);
+                
+                System.out.println("Compra realizada!");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println("Erro na transação. Operação cancelada!");
+        }
+
     }
 }

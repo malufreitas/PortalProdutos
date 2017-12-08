@@ -15,6 +15,13 @@ public class Compra implements Serializable{
     private Date dataCompra;
     private int quantidade;
 
+    public Compra(LojaProduto lojaProduto, int quantidade, double valorPago){
+        this.lojaProduto = lojaProduto;
+        this.quantidade = quantidade;
+        this.dataCompra = new Date();
+        this.valorPago = valorPago;
+    }
+    
     /**
      * @return the lojaProduto
      */

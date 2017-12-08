@@ -14,13 +14,15 @@ import Entity.Produto;
 import View.Aplicacao;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class PortalProdutosProject {
 
@@ -37,14 +39,13 @@ public class PortalProdutosProject {
         listaLojas = new ArrayList<>();
         leLojas();
         lerProdutos();
-               
+
         Application app = new Application(listaLojas, listaLojaProdutos, mapProdutos);
-       app.startApplication();
+        app.startApplication();
     }
 
     /**
-     * Lê as lojas do arquivo binário.
-     * Caso não exista, lê do txt
+     * Lê as lojas do arquivo binário. Caso não exista, lê do txt
      */
     private static void leLojas() {
         listaLojas = (ArrayList<Loja>) pfs.Read("lojas.dat");
@@ -72,8 +73,8 @@ public class PortalProdutosProject {
     }
 
     /**
-     * Lê MapProduto e LojaProduto do arquivo binario
-     * Caso na exista, lê produtos do txt e cria LojaProduto
+     * Lê MapProduto e LojaProduto do arquivo binario Caso na exista, lê
+     * produtos do txt e cria LojaProduto
      */
     private static void lerProdutos() {
         Object[] prods = pfs.Read("Produtos.dat", mapProdutos, listaLojaProdutos);
@@ -128,12 +129,25 @@ public class PortalProdutosProject {
             Produto produtoExistente) {
 
         Loja loja = buscarLoja(valores[0]);
-        LojaProduto lojaProduto = new LojaProduto(produtoExistente, loja,
-                Double.parseDouble(valores[5].replace(",", ".")), Integer.parseInt(valores[4]));
-        listaLojaProdutos.add(lojaProduto);
 
-        if (!mapProdutos.containsKey(produtoExistente.getCod())) {
-            mapProdutos.put(produtoExistente.getCod(), produtoExistente);
+        Number valor;
+        try {
+            valor = NumberFormat
+                    .getNumberInstance(java.util.Locale.FRANCE)
+                    .parse(valores[5]); // Locale da frança escolhido pois trata o número similar ao Brasil
+            
+            System.out.println(valor);
+            LojaProduto lojaProduto = new LojaProduto(produtoExistente, loja,
+                    valor.doubleValue(),
+                    Integer.parseInt(valores[4]));
+            
+            listaLojaProdutos.add(lojaProduto);
+
+            if (!mapProdutos.containsKey(produtoExistente.getCod())) {
+                mapProdutos.put(produtoExistente.getCod(), produtoExistente);
+            }
+        } catch (ParseException ex) {
+            System.err.println("Produto inválido! Seguindo para próximo produto.");
         }
     }
 
