@@ -59,6 +59,7 @@ public class Application {
             System.out.println("Selecione a opção ou digite 'sair': ");
             System.out.println("[1] Pesquisar por produtos");
             System.out.println("[2] Ver lojas disponíveis");
+            System.out.println("[3] Realizar uma compra");
 
             choice = scan.nextLine();
 
@@ -69,6 +70,8 @@ public class Application {
                 case "2":
                     verLojas();
                     break;
+                case "3":
+                    buyItem();
             }
         } while (!choice.toLowerCase().equals("sair"));
     }
@@ -275,30 +278,38 @@ public class Application {
     }
 
     private void buyItem() {
-        System.out.println("\nDigite o IdLoja IdProduto Quantidade (Nesta ordem)");
-
+        String choice = "";
+        
         try {
-            String[] item = scan.nextLine().split(" ");
+            do {
+                System.out.println("\nDigite o IdLoja IdProduto Quantidade (Nesta ordem) ou 'voltar': ");
+                
+                choice = scan.nextLine().toLowerCase();
+                String[] item = choice.split(" ");
+                System.out.println(item);
 
-            if (item.length == 3 && Integer.parseInt(item[2]) > 0) {
-                LojaProduto lp = buscarLojaProduto(item[0], Integer.parseInt(item[1]));
-                int quantidade = Integer.parseInt(item[2]);
-                double valorFinal = 0.0;
-                
-                for (int i = 0; i < quantidade; i++) {
-                    valorFinal += lp.getValor();
+                if (item.length == 3 && Integer.parseInt(item[2]) > 0) {
+                    LojaProduto lp = buscarLojaProduto(item[0], Integer.parseInt(item[1]));
+                    int quantidade = Integer.parseInt(item[2]);
+                    double valorFinal = 0.0;
+
+                    for (int i = 0; i < quantidade; i++) {
+                        valorFinal += lp.getValor();
+                    }
+
+                    Compra novaCompra = new Compra(lp, quantidade, valorFinal);
+
+                    listaCompras.add(novaCompra);
+                    pfs.Save("Compras.dat", listaCompras);
+
+                    lp.setQuantidade(lp.getQuantidade() - quantidade);  
+                    pfs.Save("Produtos.dat", mapProdutos, listaLojaProdutos);
+
+                    System.out.println(novaCompra);
+                    System.out.println("Compra realizada!");
+                    System.out.println(String.format("Valor total da compra: %.2f", valorFinal));
                 }
-                
-                Compra novaCompra = new Compra(lp, quantidade, valorFinal);
-                
-                listaCompras.add(novaCompra);
-                pfs.Save("Compras.dat", listaCompras);
-                
-                lp.setQuantidade(lp.getQuantidade() - quantidade);  
-                pfs.Save("Produtos.dat", mapProdutos, listaLojaProdutos);
-                
-                System.out.println("Compra realizada!");
-            }
+            }while (!choice.toLowerCase().equals("voltar"));
         } catch (Exception ex) {
             ex.printStackTrace();
             System.out.println("Erro na transação. Operação cancelada!");

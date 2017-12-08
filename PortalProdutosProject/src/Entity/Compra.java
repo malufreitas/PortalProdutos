@@ -78,5 +78,11 @@ public class Compra implements Serializable{
         this.quantidade = quantidade;
     }
 
+ 
+    @Override
+    public String toString() {
+        return String.format("%-70s", lojaProduto.toString());
+    }
+    
     
 }
