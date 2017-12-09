@@ -13,6 +13,7 @@ import Entity.Loja;
 import Entity.LojaProduto;
 import Entity.Produto;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -105,9 +106,11 @@ public class Application {
             setLojaProduto.addAll(buscarLojaProdutoTipo(search, true));
 
             setLojaProduto.addAll(buscarLojaProdutoLoja(search, true));
-
+            
             System.out.printf("%-4s  %-6s  %-5s  %-25s %-25s\n", "Cod", "IdLoja", "Valor", "NomeProduto", "Informações");
-            for (LojaProduto lojaProduto : setLojaProduto) {
+            List<LojaProduto> listaExibida = new ArrayList<>(setLojaProduto);
+            Collections.sort(listaExibida);
+            for (LojaProduto lojaProduto : listaExibida) {
                 System.out.println(lojaProduto.toString());
             }
 
@@ -126,6 +129,7 @@ public class Application {
         double total;
 
         System.out.printf("%-11s  %-14s  %s\n", "IdLoja", "NomeLoja", "Avaliacao");
+        Collections.sort(listaLojas);
         for (Loja loja : listaLojas) {
             System.out.println(loja.toString());
         }
@@ -142,8 +146,8 @@ public class Application {
             } else {
                 clearConsole();
                 System.out.printf("\n%-4s  %-6s  %-5s  %-25s %-25s\n", "Cod", "IdLoja", "Valor", "NomeProduto", "Informações");
-
-                for (LojaProduto lojaproduto : lojasExibidas) {
+                Collections.sort(lojasExibidas);
+                for (LojaProduto lojaproduto : lojasExibidas){
                     System.out.println(lojaproduto.toString());
                     
                     total += lojaproduto.getValor() * lojaproduto.getQuantidade();

@@ -7,8 +7,7 @@ package Entity;
 
 import java.io.Serializable;
 
-
-public class LojaProduto implements Serializable {
+public class LojaProduto implements Serializable, Comparable<LojaProduto> {
 
     public LojaProduto(Produto produto, Loja loja, double valor, int quantidade) {
         this.valor = valor;
@@ -86,10 +85,10 @@ public class LojaProduto implements Serializable {
                     livro.getAutor(),
                     livro.getNumeroPaginas());
 
-            return String.format("%-4s  %-6s  %-5s  %-25s %-25s", 
+            return String.format("%-4s  %-6s  %-5s  %-25s %-25s",
                     livro.getCod() + "",
-                    loja.getIdentificador(), 
-                    this.getValor(), 
+                    loja.getIdentificador(),
+                    this.getValor(),
                     livro.getNome(),
                     info);
 
@@ -99,8 +98,8 @@ public class LojaProduto implements Serializable {
                     elet.getMarca(), elet.getCor(), elet.getPeso());
 
             return String.format("%-4s  %-6s  %-5s  %-25s %-25s",
-                    elet.getCod(), 
-                    loja.getIdentificador(), 
+                    elet.getCod(),
+                    loja.getIdentificador(),
                     this.getValor(),
                     elet.getNome(), info);
 
@@ -111,12 +110,24 @@ public class LojaProduto implements Serializable {
                     ic.getMaterial(), ic.getCor(), ic.getTipo());
 
             return String.format("%-4s  %-6s  %-5s  %-25s %-25s",
-                    ic.getCod(), 
-                    loja.getIdentificador(), 
+                    ic.getCod(),
+                    loja.getIdentificador(),
                     this.getValor(),
                     ic.getNome(), info);
         }
-        
+
         return "";
+    }
+
+    @Override
+    public int compareTo(LojaProduto o) {
+        if (this.getValor() < o.getValor()) {
+            return -1;
+        } else if (this.getValor() == o.getValor()) {
+            return 0;
+        }else{
+            return 1;
+        }
+
     }
 }

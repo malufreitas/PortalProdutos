@@ -8,7 +8,7 @@ package Entity;
 import java.io.Serializable;
 
 
-public class Loja implements Serializable{
+public class Loja implements Serializable, Comparable<Loja>{
     private String identificador;
     private String nome;
     private int avaliacao;
@@ -71,6 +71,17 @@ public class Loja implements Serializable{
     @Override
     public boolean equals(Object obj) {
 	return (obj instanceof Loja && ((Loja) obj).identificador.equals(this.identificador));
+    }
+
+    @Override
+    public int compareTo(Loja o) {
+        if (this.getAvaliacao() < o.getAvaliacao()) {
+            return 1;
+        } else if (this.getAvaliacao() == o.getAvaliacao()) {
+            return 0;
+        }else{
+            return -1;
+        }
     }
     
 }
