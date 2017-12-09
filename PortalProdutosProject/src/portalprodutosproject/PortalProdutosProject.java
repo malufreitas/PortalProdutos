@@ -11,7 +11,6 @@ import Entity.Livro;
 import Entity.Loja;
 import Entity.LojaProduto;
 import Entity.Produto;
-import View.Aplicacao;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.text.NumberFormat;
@@ -21,8 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class PortalProdutosProject {
 
@@ -30,7 +27,7 @@ public class PortalProdutosProject {
     private static List<LojaProduto> listaLojaProdutos;
     private static Map<Integer, Produto> mapProdutos;
     private static Scanner scan;
-    private static PortalFileStream pfs = new PortalFileStream();
+    private static final PortalFileStream pfs = new PortalFileStream();
 
     /**
      * @param args the command line arguments
@@ -48,12 +45,12 @@ public class PortalProdutosProject {
      * Lê as lojas do arquivo binário. Caso não exista, lê do txt
      */
     private static void leLojas() {
-        listaLojas = (ArrayList<Loja>) pfs.Read("lojas.dat");
+        listaLojas = (ArrayList<Loja>) pfs.Read("Lojas.dat");
 
         if (listaLojas == null) {
             listaLojas = new ArrayList<>();
             try {
-                String arquivo = "resources/lojas.txt";
+                String arquivo = "resources/Lojas.txt";
                 scan = new Scanner(new File(arquivo));
 
                 while (scan.hasNextLine()) {
@@ -65,8 +62,9 @@ public class PortalProdutosProject {
 
                 scan.close();
 
-                pfs.Save("lojas.dat", listaLojas);
+                pfs.Save("Lojas.dat", listaLojas);
             } catch (FileNotFoundException e) {
+                System.err.println("Erro: Nenhum arquivo de lojas foi encontrado");
                 e.printStackTrace();
             }
         }
@@ -74,7 +72,7 @@ public class PortalProdutosProject {
 
     /**
      * Lê MapProduto e LojaProduto do arquivo binario Caso na exista, lê
-     * produtos do txt e cria LojaProduto
+     * produtos do txt e cria LojaProduto 
      */
     private static void lerProdutos() {
         Object[] prods = pfs.Read("Produtos.dat", mapProdutos, listaLojaProdutos);
@@ -110,6 +108,7 @@ public class PortalProdutosProject {
 
                 pfs.Save("Produtos.dat", mapProdutos, listaLojaProdutos);
             } catch (FileNotFoundException e) {
+                System.err.println("Erro: Nenhum arquivo de produtos foi encontrado");
                 e.printStackTrace();
             }
         }
