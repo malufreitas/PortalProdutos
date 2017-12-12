@@ -134,8 +134,7 @@ public class PortalProdutosProject {
             valor = NumberFormat
                     .getNumberInstance(java.util.Locale.FRANCE)
                     .parse(valores[5]); // Locale da frança escolhido pois trata o número similar ao Brasil
-            
-            System.out.println(valor);
+
             LojaProduto lojaProduto = new LojaProduto(produtoExistente, loja,
                     valor.doubleValue(),
                     Integer.parseInt(valores[4]));

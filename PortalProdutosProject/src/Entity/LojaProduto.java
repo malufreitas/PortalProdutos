@@ -5,6 +5,7 @@
  */
 package Entity;
 
+import com.sun.org.apache.bcel.internal.generic.L2D;
 import java.io.Serializable;
 
 public class LojaProduto implements Serializable, Comparable<LojaProduto> {
@@ -113,7 +114,7 @@ public class LojaProduto implements Serializable, Comparable<LojaProduto> {
                     ic.getCod(),
                     loja.getIdentificador(),
                     this.getValor(),
-                    ic.getNome(), info);
+                    ic.getNome(), info + " " + this.getQuantidade());
         }
 
         return "";

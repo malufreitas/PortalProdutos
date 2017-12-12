@@ -111,7 +111,7 @@ public class Application {
             List<LojaProduto> listaExibida = new ArrayList<>(setLojaProduto);
             Collections.sort(listaExibida);
             for (LojaProduto lojaProduto : listaExibida) {
-                System.out.println(lojaProduto.toString());
+                System.out.println(lojaProduto.toString() + String.format(" %d Unidade(s)", lojaProduto.getQuantidade()));
             }
 
             System.out.println("Deseja comprar algo? (S ou N)");
@@ -362,7 +362,7 @@ public class Application {
                     System.err.println("Produto inválido ou não encontrado!");
                 } 
                 catch (Exception ex) {
-                    System.err.println(ex.getMessage());
+                    System.err.println("Informação inválida. Digite novamente.");
                 }
 
                 System.out.println("\nDigite 'finalizar' para terminar a compra.");
